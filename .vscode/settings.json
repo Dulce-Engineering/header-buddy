@@ -1,0 +1,8 @@
+{
+  "liveServer.settings.AdvanceCustomBrowserCmdLine": "",
+  "liveServer.settings.port": 80,
+  "liveServer.settings.host": "localhost",
+  "liveServer.settings.root": "demo/",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.ChromeDebuggingAttachment": false
+}

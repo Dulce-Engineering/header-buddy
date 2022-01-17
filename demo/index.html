@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Header Buddy - Demo</title>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
+
+    <style>
+      body
+      {
+        text-align: center;
+      }
+      #signin_div
+      {
+        padding: 20px 30px;;
+        background-color: #DF877D88;
+        margin: 0px 5px;
+      }
+      #welcome_div
+      {
+        padding: 20px 30px;;
+        background-color: #73D2DD44;
+        margin: 0px 5px;
+      }
+    </style>
+
+    <script type="module">
+      import fb_config from "./config.js";
+      import Header_buddy from "../src/Header_Buddy.js";
+      import Menu_Buddy from "./node_modules/menu-buddy/Menu_Buddy.mjs";
+      import Menu_Buddy_Btn from "./node_modules/menu-buddy/Menu_Buddy_Btn.mjs";
+
+      customElements.define(Menu_Buddy.tname, Menu_Buddy);
+      customElements.define(Menu_Buddy_Btn.tname, Menu_Buddy_Btn);
+      customElements.define(Header_buddy.tname, Header_buddy);
+
+      window.onload = Main;
+      function Main()
+      {
+        const fb_app = firebase.initializeApp(fb_config, "demo-app");
+        const fb_auth = firebase.auth(fb_app);
+        const ctx = {fb_auth};
+        document.getElementById("header_elem").Init(ctx, Header_Signed_In, Header_Signed_Out);
+      }
+      
+      function Header_Signed_In()
+      {
+        welcome_div.hidden = false;
+        signin_div.hidden = true;
+      }
+
+      async function Header_Signed_Out()
+      {
+        welcome_div.hidden = true;
+        signin_div.hidden = false;
+      }
+    </script>
+  </head>
+
+  <body>
+    <header-buddy id="header_elem" title="Home"></header-buddy>
+    <div id="signin_div" hidden=true>You need to sign in.</div>
+    <div id="welcome_div" hidden=true>Welcome! Please use the menu on the top left of the screen to navigate.</div>
+  </body>
+</html>

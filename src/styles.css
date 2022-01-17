@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+body
+{
+  font-family: 'Roboto', sans-serif;
+  padding: 0;
+  margin: 0;
+  color: #000;
+  background-color: #fff;
+  font-size: 14px;
+}
+
+main
+{
+  padding: 40px;
+}
+
+button
+{
+  background-color: #467E82;
+  border: 5px solid #fff;
+  border-radius: 50px;
+  box-shadow: 0 5px 8px 0 rgb(61 82 96 / 20%);
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: inherit;
+  padding: 5px 10px;
+  transition: all 0.25s linear;
+  vertical-align: middle;
+}
+button:hover
+{
+  background-color: #73D2DD;
+}
+button:disabled
+{
+  border-color: #555;
+  color: #555;
+  cursor: default;
+}
+
+#form
+{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 10px 10px;
+}
+#form label
+{
+  justify-self: end;
+}
+.field_value
+{
+  justify-self: start; 
+}
+a
+{
+  color: inherit;
+  text-decoration: none;
+}
+a:hover
+{
+  color: #555;
+}
+a:visited
+{
+  color: inherit;
+}
+
+table
+{
+  width: 100%;
+  border-collapse: collapse;
+}
+thead
+{
+  border-bottom: 4px double #fff;
+}
+tfoot
+{
+  border-top: 1px solid #fff;
+}
+th
+{
+  text-align: left;
+  padding: 10px;
+}
+td
+{
+  padding: 10px;
+}
+
+.de-dropdown
+{
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  position: fixed;
+  border: 1px solid #fff;
+  box-shadow: 0px 0px 10px 10px #000;
+  background-color: #000;
+}
+.de-dropdown-item
+{
+  font-weight: normal;
+  padding: 5px 10px;
+}
+.de-dropdown-item:hover
+{
+  background-color: #555;
+}
+.de-dropdown-header
+{
+  font-weight: bold;
+  padding: 0px 5px;
+  text-align: right;
+}
+
+.bk-header
+{
+  background-color: #467E82;
+  color: #73D2DD;
+  margin-bottom: 5px;
+  display: block;
+  padding: 10px;
+  text-align: left;
+}
+#bk-header-bar
+{
+  display: flex;
+  align-items: center;
+}
+.bk-header-action
+{
+  text-align: right;
+}
+.bk-header-title
+{
+  font-size: 2em;
+  margin-left: 10px;
+}
+.bk-header-user
+{
+  --def-display: inline-block;
+  display: none;
+}
+.bk-header-signin
+{
+  --def-display: inline-block;
+  display: none;
+}
+#user_name
+{
+  margin-right: 10px;
+  color: #fff;
+}
