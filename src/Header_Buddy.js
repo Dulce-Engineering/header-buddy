@@ -1,9 +1,10 @@
 import 'https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js'
 
-class Header_buddy extends HTMLElement 
+class Header_Buddy extends HTMLElement 
 {
   static tname = "header-buddy";
   static user_key = "Header-Buddy.user";
+  static auth_id = "firebaseui-auth-container";
 
   // Lifecycle ====================================================================================
 
@@ -14,7 +15,6 @@ class Header_buddy extends HTMLElement
     this.On_Auth_State_Changed = this.On_Auth_State_Changed.bind(this);
     this.On_Sign_In_Clicked = this.On_Sign_In_Clicked.bind(this);
     this.On_Sign_Out_Clicked = this.On_Sign_Out_Clicked.bind(this);
-    this.On_Acc_Clicked = this.On_Acc_Clicked.bind(this);
     this.On_User_Is_Signing_In = this.On_User_Is_Signing_In.bind(this);
 
     this.attachShadow({mode: "open"});
@@ -68,13 +68,18 @@ class Header_buddy extends HTMLElement
 
   // API ==========================================================================================
 
-  Init(ctx, on_signed_in_fn, on_signed_out_fn)
+  Init(ctx, on_signed_in_fn, on_signed_out_fn, on_acc_clicked_fn)
   {
     if (on_signed_in_fn)
       header_elem.addEventListener("signedin", on_signed_in_fn);
     if (on_signed_out_fn)
       header_elem.addEventListener("signedout", on_signed_out_fn);
-
+    if (on_acc_clicked_fn)
+    {
+      const acc_btn = this.shadowRoot.querySelector("#acc_btn");
+      acc_btn.addEventListener("click", on_acc_clicked_fn.bind(this));
+    }
+  
     this.ctx = ctx;
     this.ui = new firebaseui.auth.AuthUI(this.ctx.fb_auth);
 
@@ -92,7 +97,7 @@ class Header_buddy extends HTMLElement
   Get_Logged_In_User()
   {
     let user;
-    const user_str = localStorage.getItem(Header_buddy.user_key);
+    const user_str = localStorage.getItem(Header_Buddy.user_key);
     if (user_str)
     {
       user = JSON.parse(user_str);
@@ -143,15 +148,7 @@ class Header_buddy extends HTMLElement
       ],
     };
 
-    const auth_id = "firebaseui-auth-container";
-    let auth_div = document.getElementById(auth_id);
-    if (!auth_div)
-    {
-      auth_div = document.createElement("div");
-      auth_div.id = auth_id;
-      document.body.append(auth_div);
-    }
-    this.ui.start('#' + auth_id, auth_ui_config);
+    this.ui.start('#' + Header_Buddy.auth_id, auth_ui_config);
   }
   
   // Events =======================================================================================
@@ -168,13 +165,13 @@ class Header_buddy extends HTMLElement
         const day = 86400000;
         user.expireAt = now + day;
         const user_str = JSON.stringify(user);
-        localStorage.setItem(Header_buddy.user_key, user_str);
+        localStorage.setItem(Header_Buddy.user_key, user_str);
       }
     }
     else
     {
       this.On_User_Has_Signed_Out();
-      localStorage.removeItem(Header_buddy.user_key);
+      localStorage.removeItem(Header_Buddy.user_key);
     }
   }
 
@@ -187,8 +184,8 @@ class Header_buddy extends HTMLElement
 
   On_User_Has_Signed_Out()
   {
-    Header_buddy.Show("signin_info", this.shadowRoot);
-    Header_buddy.Hide("user_info", this.shadowRoot);
+    Header_Buddy.Show("signin_info", this.shadowRoot);
+    Header_Buddy.Hide("user_info", this.shadowRoot);
     const event = new Event('signedout');
     this.dispatchEvent(event);
   }
@@ -215,17 +212,8 @@ class Header_buddy extends HTMLElement
 
   On_User_Is_Signing_In() 
   {
-    Header_buddy.Hide("signin_info", this.shadowRoot);
-    Header_buddy.Hide("user_info", this.shadowRoot);
-  }
-
-  On_Acc_Clicked()
-  {
-    if (this.ctx)
-    {
-      const uid = this.ctx.fb_auth.currentUser.uid;
-      window.open("user.html?uid=" + uid, "_self");
-    }
+    Header_Buddy.Hide("signin_info", this.shadowRoot);
+    Header_Buddy.Hide("user_info", this.shadowRoot);
   }
 
   // Rendering ====================================================================================
@@ -235,8 +223,8 @@ class Header_buddy extends HTMLElement
     const elem = this.shadowRoot.querySelector("#user_name");
     elem.innerText = display_name;
 
-    Header_buddy.Hide("signin_info", this.shadowRoot);
-    Header_buddy.Show("user_info", this.shadowRoot);
+    Header_Buddy.Hide("signin_info", this.shadowRoot);
+    Header_Buddy.Show("user_info", this.shadowRoot);
   }
 
   Render()
@@ -269,7 +257,7 @@ class Header_buddy extends HTMLElement
           <button id="sign_in_btn">Sign In</button>
         </div>
       </div>`;
-    const doc = Header_buddy.toDocument(html);
+    const doc = Header_Buddy.toDocument(html);
     this.shadowRoot.append(doc);
 
     this.main_menu = this.shadowRoot.querySelector("#main_menu");
@@ -283,8 +271,19 @@ class Header_buddy extends HTMLElement
     const sign_out_btn = this.shadowRoot.querySelector("#sign_out_btn");
     sign_out_btn.addEventListener("click", this.On_Sign_Out_Clicked);
 
-    const acc_btn = this.shadowRoot.querySelector("#acc_btn");
-    acc_btn.addEventListener("click", this.On_Acc_Clicked);
+    let auth_div = document.getElementById(Header_Buddy.auth_id);
+    if (!auth_div)
+    {
+      const auth_link = document.createElement("link");
+      auth_link.type = "text/css";
+      auth_link.rel = "stylesheet";
+      auth_link.href = "https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css";
+      document.head.append(auth_link);
+
+      auth_div = document.createElement("div");
+      auth_div.id = Header_Buddy.auth_id;
+      document.body.append(auth_div);
+    }
 
     this.title = this.init_title;
   }
@@ -392,4 +391,4 @@ class Header_buddy extends HTMLElement
   }
 }
 
-export default Header_buddy;
+export default Header_Buddy;

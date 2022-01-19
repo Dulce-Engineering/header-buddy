@@ -7,7 +7,6 @@
     <title>Header Buddy - Demo</title>
 
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
 
     <style>
       body
@@ -46,7 +45,7 @@
         const ctx = {fb_auth};
         
         const header_elem = document.getElementById("header_elem");
-        header_elem.Init(ctx, Header_Signed_In, Header_Signed_Out);
+        header_elem.Init(ctx, Header_Signed_In, Header_Signed_Out, On_Acc_Clicked);
 
         const m =
         {
@@ -73,6 +72,12 @@
         {
           alert("Registration Forms clicked.");
         }
+      }
+
+      function On_Acc_Clicked()
+      {
+        const uid = this.ctx.fb_auth.currentUser.uid;
+        alert ("user is " + uid);
       }
 
       function Header_Signed_In()
