@@ -282,7 +282,7 @@ class Header_Buddy extends HTMLElement
 
       auth_div = document.createElement("div");
       auth_div.id = Header_Buddy.auth_id;
-      document.body.append(auth_div);
+      this.after(auth_div);
     }
 
     this.title = this.init_title;
