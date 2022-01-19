@@ -30,7 +30,7 @@
 
     <script type="module">
       import fb_config from "./config.js";
-      import Header_buddy from "../src/Header_Buddy.js";
+      import Header_buddy from "./node_modules/header-buddy/Header_Buddy.js";
       import Menu_Buddy from "./node_modules/menu-buddy/Menu_Buddy.mjs";
       import Menu_Buddy_Btn from "./node_modules/menu-buddy/Menu_Buddy_Btn.mjs";
 
@@ -44,9 +44,37 @@
         const fb_app = firebase.initializeApp(fb_config, "demo-app");
         const fb_auth = firebase.auth(fb_app);
         const ctx = {fb_auth};
-        document.getElementById("header_elem").Init(ctx, Header_Signed_In, Header_Signed_Out);
+        
+        const header_elem = document.getElementById("header_elem");
+        header_elem.Init(ctx, Header_Signed_In, Header_Signed_Out);
+
+        const m =
+        {
+          title: "Demo",
+          class_name: "menu",
+          options: 
+          [
+            {title: "Home"}, 
+            {title: "Registration Forms"}
+          ]
+        };
+        header_elem.main_menu.menu = m;
+        header_elem.main_menu.menu_buddy.style.width = "200px";
+        header_elem.main_menu.menu_buddy.addEventListener("clickoption", On_Main_Menu_Clicked);
       }
       
+      function On_Main_Menu_Clicked(event)
+      {
+        if (event.detail.title == "Home")
+        {
+          alert("Home clicked.");
+        }
+        if (event.detail.title == "Registration Forms")
+        {
+          alert("Registration Forms clicked.");
+        }
+      }
+
       function Header_Signed_In()
       {
         welcome_div.hidden = false;

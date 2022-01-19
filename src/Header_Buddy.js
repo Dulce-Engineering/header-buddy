@@ -33,13 +33,17 @@ class Header_buddy extends HTMLElement
   {
   }
 
-  static observedAttributes = ["title"];
+  static observedAttributes = ["title", "style-src"];
   attributeChangedCallback(attr_name, old_value, new_value)
   {
     if (attr_name == "title")
     {
       this.init_title = new_value;
       this.title = new_value;
+    }
+    else if (attr_name == "style-src")
+    {
+      this.style_src = new_value;
     }
   }
 
@@ -224,18 +228,6 @@ class Header_buddy extends HTMLElement
     }
   }
 
-  On_Main_Menu_Clicked(event)
-  {
-    if (event.detail.title == "Home")
-    {
-      window.open("/admin/index.html", "_self");
-    }
-    if (event.detail.title == "Registration Forms")
-    {
-      window.open("/admin/reg_forms.html", "_self");
-    }
-  }
-
   // Rendering ====================================================================================
 
   Render_Signed_In(display_name)
@@ -249,18 +241,19 @@ class Header_buddy extends HTMLElement
 
   Render()
   {
-    this.classList.add("bk-header");
+    this.shadowRoot.replaceChildren(this.Get_Styles());
     const html = `
-      <link type="text/css" rel="stylesheet" href="../src/styles.css"/>
       <xmenu-buddy-panel id="main_menu2" menu-style-src="/components/menu-panel.css"></xmenu-buddy-panel>
 
       <div id="bk-header-bar">
         <menu-buddy-btn id="main_menu" xbtn-style-src="/components/menu-btn.css" show-pos="bottom">
-          <ximg src="/images/menu_teal_24dp.svg">
-          Menu
+          <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+            <path d="M0 0h24v24H0V0z" fill="none"/>
+            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          </svg>
         </menu-buddy-btn>
         <span id="title" class="bk-header-title">
-          <a href="/"><span>BrandKind</span></a> - <span id="title_span"></span>
+          <span id="title_span"></span>
         </span>
       </div>
 
@@ -279,21 +272,7 @@ class Header_buddy extends HTMLElement
     const doc = Header_buddy.toDocument(html);
     this.shadowRoot.append(doc);
 
-    const m =
-    {
-      title: "BrandKind",
-      class_name: "menu",
-      options: 
-      [
-        {title: "Home"}, 
-        {title: "Registration Forms"}
-      ]
-    };
-
-    const main_menu = this.shadowRoot.querySelector("#main_menu");
-    main_menu.menu = m;
-    main_menu.menu_buddy.style.width = "200px";
-    main_menu.menu_buddy.addEventListener("clickoption", this.On_Main_Menu_Clicked);
+    this.main_menu = this.shadowRoot.querySelector("#main_menu");
 
     const sign_in_btn = this.shadowRoot.querySelector("#sign_in_btn");
     sign_in_btn.addEventListener("click", this.On_Sign_In_Clicked);
@@ -310,6 +289,66 @@ class Header_buddy extends HTMLElement
     this.title = this.init_title;
   }
   
+  Get_Styles()
+  {
+    let elem;
+    const def_style = `
+      :host
+      {
+        margin-bottom: 5px;
+        display: block;
+        padding: 10px;
+        text-align: left;
+      }
+      
+      #bk-header-bar
+      {
+        display: flex;
+        align-items: center;
+      }
+      .bk-header-title
+      {
+        font-size: 2em;
+        margin-left: 10px;
+      }
+      
+      .bk-header-action
+      {
+        text-align: right;
+      }
+      .bk-header-user
+      {
+        --def-display: inline-block;
+        display: none;
+      }
+      .bk-header-signin
+      {
+        --def-display: inline-block;
+        display: none;
+      }
+      #user_name
+      {
+        margin-right: 10px;
+      }
+    `;
+
+    if (this.style_src)
+    {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = this.style_src;
+      elem = link;
+    }
+    else
+    {
+      const style = document.createElement("style");
+      style.innerHTML = def_style;
+      elem = style;
+    }
+
+    return elem;
+  }
+
   // Utils ========================================================================================
 
   static toDocument(html) 

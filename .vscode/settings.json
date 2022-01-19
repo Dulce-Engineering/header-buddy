@@ -2,7 +2,8 @@
   "liveServer.settings.AdvanceCustomBrowserCmdLine": "",
   "liveServer.settings.port": 80,
   "liveServer.settings.host": "localhost",
-  "liveServer.settings.root": "demo/",
+  "liveServer.settings.root": "/demo",
   "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.mount": [["/node_modules/header-buddy", "./src"]],
   "liveServer.settings.ChromeDebuggingAttachment": false
 }
