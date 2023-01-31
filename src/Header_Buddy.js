@@ -68,12 +68,12 @@ class Header_Buddy extends HTMLElement
 
   // API ==========================================================================================
 
-  Init(ctx, on_signed_in_fn, on_signed_out_fn, on_acc_clicked_fn)
+  Init(ctx, on_signed_in_fn, on_signed_out_fn, on_acc_clicked_fn, menu_def)
   {
     if (on_signed_in_fn)
-      header_elem.addEventListener("signedin", on_signed_in_fn);
+      this.addEventListener("signedin", () => on_signed_in_fn(ctx));
     if (on_signed_out_fn)
-      header_elem.addEventListener("signedout", on_signed_out_fn);
+      this.addEventListener("signedout", () => on_signed_out_fn(ctx));
     if (on_acc_clicked_fn)
     {
       const acc_btn = this.shadowRoot.querySelector("#acc_btn");
@@ -82,6 +82,7 @@ class Header_Buddy extends HTMLElement
   
     this.ctx = ctx;
     this.ui = new firebaseui.auth.AuthUI(this.ctx.fb_auth);
+    this.main_menu.menu = menu_def;
 
     const user = this.Get_Logged_In_User();
     if (user)

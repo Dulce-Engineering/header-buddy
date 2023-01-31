@@ -1,0 +1,28 @@
+{
+  "name": "header-buddy",
+  "version": "1.0.2",
+  "description": "A Web Component that acts as a website header which encapsulates Firebase authentication and site navigation.",
+  "main": "Header_Buddy.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dulce-Engineering/header-buddy.git"
+  },
+  "keywords": [
+    "web",
+    "component",
+    "header",
+    "javascript",
+    "login",
+    "firebase",
+    "authentication"
+  ],
+  "author": "Dulce Engineering",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dulce-Engineering/header-buddy/issues"
+  },
+  "homepage": "https://github.com/Dulce-Engineering/header-buddy#readme"
+}
